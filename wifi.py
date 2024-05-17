@@ -1,7 +1,7 @@
 #Showing and Connection to WIFI
 
 
-
+import wifi
 import os
 import re
 import subprocess
@@ -38,10 +38,16 @@ def show_all_network():
     # print(devices)
     return result
 
-def connect_to_wifi(ssid,password):
+def connect_to_wifi(ssid, password):
     command = f'netsh wlan connect name={ssid}'
-    os.system(command)
-    speak(f'Connection to {ssid}')
+    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate(input=password.encode())
+    if stderr:
+        # print("Error:", stderr.decode())
+        return False
+    else:
+        # print("Connected to", ssid)
+        return True
 
 def disconnect_form_wifi():
     command = f'netsh wlan disconnect'
@@ -51,3 +57,8 @@ def disconnect_form_wifi():
 
 # print(result)
 # print(elements)
+# print(show_all_network()[2])
+
+connect_to_wifi('CMCC-A272','Bastau2008')
+
+# disconnect_form_wifi()

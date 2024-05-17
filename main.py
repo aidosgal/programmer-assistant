@@ -7,10 +7,12 @@ import random
 import operator
 import speech_recognition as sr
 import datetime
+from spotify import turn_on_spotify
 import wikipedia
 import webbrowser
 import os
 import winshell
+from word2number import w2n
 import pyjokes
 import feedparser
 import smtplib
@@ -25,13 +27,13 @@ from bs4 import BeautifulSoup
 import win32com.client as wincl
 from urllib.request import urlopen
 import subprocess
-import torch
+# import torch
 # from tts.TTS.api import TTS
 
 from assistant import speak, username, wishMe
 from send_email import sendEmail
 from take_command import takeCommand
-from wifi import show_all_network
+from wifi import connect_to_wifi, show_all_network
 
 # from wifi_functions import show_all_network
 
@@ -50,7 +52,6 @@ if __name__ == '__main__':
     username()
      
     while True:
-         
         query = takeCommand().lower()
          
         # All the commands said by user will be 
@@ -76,14 +77,6 @@ if __name__ == '__main__':
         elif 'open stackoverflow' in query:
             speak("Here you go to Stack Over flow.Happy coding")
             webbrowser.open("stackoverflow.com")   
- 
-        elif 'play music' in query or "play song" in query:
-            speak("Here you go with music")
-            # music_dir = "G:\\Song"
-            music_dir = "C:\\Users\\GAURAV\\Music"
-            songs = os.listdir(music_dir)
-            print(songs)    
-            random = os.startfile(os.path.join(music_dir, songs[1]))
  
         elif 'the time' in query:
             strTime = datetime.datetime.now().strftime("% H:% M:% S")    
@@ -115,13 +108,7 @@ if __name__ == '__main__':
             except Exception as e:
                 print(e)
                 speak("I am not able to send this email")
- 
-        elif 'how are you' in query:
-            speak("I am fine, Thank you")
-            speak("How are you, Sir")
- 
-        elif 'fine' in query or "good" in query:
-            speak("It's good to know that your fine")
+
  
         elif "change my name to" in query:
             query = query.replace("change my name to", "")
@@ -228,11 +215,11 @@ if __name__ == '__main__':
             winshell.recycle_bin().empty(confirm = False, show_progress = False, sound = True)
             speak("Recycle Bin Recycled")
  
-        elif "stop listening" or 'stop' in query:
-            speak("for how much time you want to stop jarvis from listening commands")
-            a = int(takeCommand())
-            time.sleep(a)
-            print(a)
+        # elif "stop listening" or 'stop' in query:
+        #     speak("for how much time you want to stop jarvis from listening commands")
+        #     a = int(takeCommand())
+        #     time.sleep(a)
+        #     print(a)
  
         elif "where is" in query:
             query = query.replace("where is", "")
@@ -301,7 +288,7 @@ if __name__ == '__main__':
              
             # Google Open weather website
             # to get API of Open weather 
-            api_key = "Api key"
+            api_key = "42ac2b529b3491c8fa9353c7e11b97d3"
             base_url = "http://api.openweathermap.org / data / 2.5 / weather?"
             speak(" City name ")
             print("City name : ")
@@ -346,14 +333,6 @@ if __name__ == '__main__':
             speak(assname)
  
         # most asked question from google Assistant
-        elif "will you be my gf" in query or "will you be my bf" in query:   
-            speak("I'm not sure about, may be you should give me some time")
- 
-        elif "how are you" in query:
-            speak("I'm fine, glad you me that")
- 
-        elif "i love you" in query:
-            speak("It's hard to understand")
  
         elif "what is" in query or "who is" in query:
              
@@ -368,10 +347,36 @@ if __name__ == '__main__':
             except StopIteration:
                 print ("No results")
 
-        elif 'network' in query:
+        elif 'show' and 'network' in query:
+            speak("Here are all available local networks")
             wifi_list = show_all_network()
             for el in wifi_list:
                 print(el)
+        elif 'connect to the network' or 'connect to the wifi' in query:
+            speak("Here are all available local networks")
+            wifi_list = show_all_network()
+            for el in wifi_list:
+                print(el)
+            speak('Say the number of the network that you want to connect')
+            net_num = takeCommand()
+            print(net_num)
+            int_net_num = w2n.word_to_num(net_num)
+            net_ssid = wifi_list[int_net_num-1][2]
+            # print(net_ssid)
+            try:
+                speak('Enter password of this network: ')
+                password = input(f'Password of {net_ssid}: ')
+                speak('Trying to connect to the wifi...')
+                if connect_to_wifi(net_ssid,password):
+                    speak('Successfully connected to the wifi')
+                else:
+                    speak('Unsuccessul')
+            except:
+                pass
+
+        elif 'open Spotify' in query or 'play music'in query or "play song" in query:
+            speak('Trying to open Spotify')
+            turn_on_spotify()
         # elif "" in query:
             # Command go here
             # For adding more commands
