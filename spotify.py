@@ -59,9 +59,12 @@ def find_artist_and_listen():
             pyautogui.write(f'{artist}')
             time.sleep(0.1)
             pyautogui.press('Enter')
-            time.sleep(0.1)
-            speak(f'Enjoy listening {artist}')
+            time.sleep(0.3)
             press_key_combination('Shift','Enter')
+            time.sleep(0.3)
+            speak(f'Enjoy listening {artist}')
+            
+            
             break
         else:
             continue

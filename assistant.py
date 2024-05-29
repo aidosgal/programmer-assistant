@@ -23,7 +23,7 @@ def wishMe():
     else:
         speak("Good Evening Sir !")
 
-    assname = ("Jarvis 1 point o")
+    assname = ("Azet")
     speak("I am your Assistant")
     speak(assname)
 

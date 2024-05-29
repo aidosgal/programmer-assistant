@@ -28,3 +28,13 @@ def git_commit():
     
     subprocess.run(['git', 'push', 'origin', 'main'])
 git_commit()
+
+
+def git_pull():
+    speak('Going to pull your project from github')
+
+    # Pull the latest changes from the remote repository
+    subprocess.run(['git', 'pull', 'origin', 'main'])
+    speak('Successfully pulled!')
+
+git_pull()

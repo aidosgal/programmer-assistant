@@ -1,6 +1,7 @@
 #Showing and Connection to WIFI
 
-
+from word2number import w2n
+from take_command import takeCommand
 import wifi
 import os
 import re
@@ -54,12 +55,26 @@ def disconnect_form_wifi():
     os.system(command)
     speak('Disconnected from your Wifi')
     
-
-# print(result)
-# print(elements)
-# print(show_all_network()[2])
-
-# connect_to_wifi('CMCC-A272','Bastau2008')
-
-# disconnect_form_wifi()
+speak("Here are all available local networks")
 show_all_network()
+wifi_list = show_all_network()
+wifi_list_correct = [el for el in wifi_list if el != ':']
+for el in wifi_list_correct:
+    print(el)
+speak('Say the number of the network that you want to connect')
+net_num = takeCommand()
+print('You said: ', net_num)
+
+int_net_num = w2n.word_to_num(net_num)
+net_ssid = wifi_list[int_net_num-1][2]
+print(net_ssid)
+try:
+    speak('Enter password of this network: ')
+    password = input(f'Password of {net_ssid}: ')
+    speak('Trying to connect to the wifi...')
+    if connect_to_wifi(net_ssid,password):
+        speak('Successfully connected to the wifi')
+    else:
+        speak('Unsuccessul')
+except:
+    pass
