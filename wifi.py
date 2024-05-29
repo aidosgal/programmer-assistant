@@ -35,7 +35,7 @@ def show_all_network():
             
         ssids.append(ssids_info)
     result = [ele for ele in ssids if ele!=[]]
-    # print(devices)
+    # print(result)
     return result
 
 def connect_to_wifi(ssid, password):
@@ -59,6 +59,7 @@ def disconnect_form_wifi():
 # print(elements)
 # print(show_all_network()[2])
 
-connect_to_wifi('CMCC-A272','Bastau2008')
+# connect_to_wifi('CMCC-A272','Bastau2008')
 
 # disconnect_form_wifi()
+show_all_network()

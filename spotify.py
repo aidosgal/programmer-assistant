@@ -55,17 +55,15 @@ def find_artist_and_listen():
         answer_first = takeCommand().lower()
         if 'yes' in answer_first:
             press_key_combination('ctrl','k')
-            time.sleep(0.5)
+            time.sleep(0.1)
             pyautogui.write(f'{artist}')
-            time.sleep(0.5)
-            pyautogui.press('enter')
-            time.sleep(0.5)
-            press_key_combination('shift','enter')
+            time.sleep(0.1)
+            pyautogui.press('Enter')
+            time.sleep(0.1)
             speak(f'Enjoy listening {artist}')
+            press_key_combination('Shift','Enter')
             break
         else:
             continue
-
-
-# turn_on_spotify()
 find_artist_and_listen()
+

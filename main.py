@@ -7,11 +7,12 @@ import random
 import operator
 import speech_recognition as sr
 import datetime
-from spotify import turn_on_spotify
+
 import wikipedia
 import webbrowser
 import os
 import winshell
+from git_commit import git_commit
 from word2number import w2n
 import pyjokes
 import feedparser
@@ -34,14 +35,10 @@ from assistant import speak, username, wishMe
 from send_email import sendEmail
 from take_command import takeCommand
 from wifi import connect_to_wifi, show_all_network
-
+from spotify import find_artist_and_listen, turn_on_spotify
 # from wifi_functions import show_all_network
 
 
-
-
-
-    
 if __name__ == '__main__':
     clear = lambda: os.system('cls')
      
@@ -78,36 +75,36 @@ if __name__ == '__main__':
             speak("Here you go to Stack Over flow.Happy coding")
             webbrowser.open("stackoverflow.com")   
  
-        elif 'the time' in query:
+        elif 'time' in query:
             strTime = datetime.datetime.now().strftime("% H:% M:% S")    
             speak(f"Sir, the time is {strTime}")
  
-        elif 'open opera' in query:
-            codePath = r"C:\\Users\\GAURAV\\AppData\\Local\\Programs\\Opera\\launcher.exe"
-            os.startfile(codePath)
+        # elif 'open opera' in query:
+        #     codePath = r"C:\\Users\\GAURAV\\AppData\\Local\\Programs\\Opera\\launcher.exe"
+        #     os.startfile(codePath)
  
-        elif 'email to gaurav' in query:
-            try:
-                speak("What should I say?")
-                content = takeCommand()
-                to = "Receiver email address"   
-                sendEmail(to, content)
-                speak("Email has been sent !")
-            except Exception as e:
-                print(e)
-                speak("I am not able to send this email")
+        # elif 'email to gaurav' in query:
+        #     try:
+        #         speak("What should I say?")
+        #         content = takeCommand()
+        #         to = "Receiver email address"   
+        #         sendEmail(to, content)
+        #         speak("Email has been sent !")
+        #     except Exception as e:
+        #         print(e)
+        #         speak("I am not able to send this email")
  
-        elif 'send a mail' in query:
-            try:
-                speak("What should I say?")
-                content = takeCommand()
-                speak("whome should i send")
-                to = input()    
-                sendEmail(to, content)
-                speak("Email has been sent !")
-            except Exception as e:
-                print(e)
-                speak("I am not able to send this email")
+        # elif 'send a mail' in query:
+        #     try:
+        #         speak("What should I say?")
+        #         content = takeCommand()
+        #         speak("whome should i send")
+        #         to = input()    
+        #         sendEmail(to, content)
+        #         speak("Email has been sent !")
+        #     except Exception as e:
+        #         print(e)
+        #         speak("I am not able to send this email")
 
  
         elif "change my name to" in query:
@@ -124,13 +121,10 @@ if __name__ == '__main__':
             speak(assname)
             print("My friends call me", assname)
  
-        elif 'exit' in query:
+        elif 'goodbye' in query or 'bye bye' in query or 'stop' in query or 'exit' in query or 'quit' in query:
             speak("Thanks for giving me your time")
             exit()
- 
-        elif "who made you" in query or "who created you" in query: 
-            speak("I have been created by Gaurav.")
-             
+      
         elif 'joke' in query:
             speak(pyjokes.get_joke())
              
@@ -151,26 +145,6 @@ if __name__ == '__main__':
             query = query.replace("play", "")          
             webbrowser.open(query) 
  
-        elif "who i am" in query:
-            speak("If you talk then definitely your human.")
- 
-        elif "why you came to world" in query:
-            speak("Thanks to Gaurav. further It's a secret")
- 
-        elif 'power point presentation' in query:
-            speak("opening Power Point presentation")
-            power = r"C:\\Users\\GAURAV\\Desktop\\Minor Project\\Presentation\\Voice Assistant.pptx"
-            os.startfile(power)
- 
-        elif 'is love' in query:
-            speak("It is 7th sense that destroy all other senses")
- 
-        elif "who are you" in query:
-            speak("I am your virtual assistant created by Gaurav")
- 
-        elif 'reason for you' in query:
-            speak("I was created as a Minor project by Mister Gaurav ")
- 
         elif 'change background' in query:
             ctypes.windll.user32.SystemParametersInfoW(20, 
                                                        0, 
@@ -178,29 +152,25 @@ if __name__ == '__main__':
                                                        0)
             speak("Background changed successfully")
  
-        elif 'open bluestack' in query:
-            appli = r"C:\\ProgramData\\BlueStacks\\Client\\Bluestacks.exe"
-            os.startfile(appli)
- 
-        elif 'news' in query:
+        # elif 'news' in query:
              
-            try: 
-                jsonObj = urlopen('''https://newsapi.org / v1 / articles?source = the-times-of-india&sortBy = top&apiKey =\\times of India Api key\\''')
-                data = json.load(jsonObj)
-                i = 1
+        #     try: 
+        #         jsonObj = urlopen('''https://newsapi.org / v1 / articles?source = the-times-of-india&sortBy = top&apiKey =\\times of India Api key\\''')
+        #         data = json.load(jsonObj)
+        #         i = 1
                  
-                speak('here are some top news from the times of india')
-                print('''=============== TIMES OF INDIA ============'''+ '\n')
+        #         speak('here are some top news from the times of india')
+        #         print('''=============== TIMES OF INDIA ============'''+ '\n')
                  
-                for item in data['articles']:
+        #         for item in data['articles']:
                      
-                    print(str(i) + '. ' + item['title'] + '\n')
-                    print(item['description'] + '\n')
-                    speak(str(i) + '. ' + item['title'] + '\n')
-                    i += 1
-            except Exception as e:
+        #             print(str(i) + '. ' + item['title'] + '\n')
+        #             print(item['description'] + '\n')
+        #             speak(str(i) + '. ' + item['title'] + '\n')
+        #             i += 1
+        #     except Exception as e:
                  
-                print(str(e))
+        #         print(str(e))
  
          
         elif 'lock window' in query:
@@ -234,14 +204,6 @@ if __name__ == '__main__':
         elif "restart" in query:
             subprocess.call(["shutdown", "/r"])
              
-        elif "hibernate" in query or "sleep" in query:
-            speak("Hibernating")
-            subprocess.call("shutdown / h")
- 
-        elif "log off" in query or "sign out" in query:
-            speak("Make sure all the application are closed before sign-out")
-            time.sleep(5)
-            subprocess.call(["shutdown", "/l"])
  
         elif "write a note" in query:
             speak("What should i write, sir")
@@ -263,26 +225,21 @@ if __name__ == '__main__':
             print(file.read())
             speak(file.read(6))
  
-        elif "update assistant" in query:
-            speak("After downloading file please replace this file with the downloaded one")
-            url = '# url after uploading file'
-            r = requests.get(url, stream = True)
+        # elif "update assistant" in query:
+        #     speak("After downloading file please replace this file with the downloaded one")
+        #     url = '# url after uploading file'
+        #     r = requests.get(url, stream = True)
              
-            with open("Voice.py", "wb") as Pypdf:
+        #     with open("Voice.py", "wb") as Pypdf:
                  
-                total_length = int(r.headers.get('content-length'))
+        #         total_length = int(r.headers.get('content-length'))
                  
-                for ch in progress.bar(r.iter_content(chunk_size = 2391975),
-                                       expected_size =(total_length / 1024) + 1):
-                    if ch:
-                      Pypdf.write(ch)
+        #         for ch in progress.bar(r.iter_content(chunk_size = 2391975),
+        #                                expected_size =(total_length / 1024) + 1):
+        #             if ch:
+        #               Pypdf.write(ch)
                      
         # NPPR9-FWDCX-D2C8J-H872K-2YT43
-        elif "jarvis" in query:
-             
-            wishMe()
-            speak("Jarvis 1 point o in your service Mister")
-            speak(assname)
  
         elif "weather" in query:
              
@@ -309,20 +266,20 @@ if __name__ == '__main__':
             else: 
                 speak(" City Not Found ")
              
-        elif "send message " in query:
-                # You need to create an account on Twilio to use this service
-                account_sid = 'Account Sid key'
-                auth_token = 'Auth token'
-                client = Client(account_sid, auth_token)
+        # elif "send message " in query:
+        #         # You need to create an account on Twilio to use this service
+        #         account_sid = 'Account Sid key'
+        #         auth_token = 'Auth token'
+        #         client = Client(account_sid, auth_token)
  
-                message = client.messages \
-                                .create(
-                                    body = takeCommand(),
-                                    from_='Sender No',
-                                    to ='Receiver No'
-                                )
+        #         message = client.messages \
+        #                         .create(
+        #                             body = takeCommand(),
+        #                             from_='Sender No',
+        #                             to ='Receiver No'
+        #                         )
  
-                print(message.sid)
+        #         print(message.sid)
  
         elif "wikipedia" in query:
             webbrowser.open("wikipedia.com")
@@ -355,14 +312,16 @@ if __name__ == '__main__':
         elif 'connect to the network' or 'connect to the wifi' in query:
             speak("Here are all available local networks")
             wifi_list = show_all_network()
-            for el in wifi_list:
+            wifi_list_correct = [el for el in wifi_list if el != ':']
+            for el in wifi_list_correct:
                 print(el)
             speak('Say the number of the network that you want to connect')
             net_num = takeCommand()
-            print(net_num)
+            print('You said: ', net_num)
+            
             int_net_num = w2n.word_to_num(net_num)
             net_ssid = wifi_list[int_net_num-1][2]
-            # print(net_ssid)
+            print(net_ssid)
             try:
                 speak('Enter password of this network: ')
                 password = input(f'Password of {net_ssid}: ')
@@ -376,9 +335,12 @@ if __name__ == '__main__':
 
         elif 'open Spotify' in query or 'play music'in query or "play song" in query:
             speak('Trying to open Spotify')
-            turn_on_spotify()
-        # elif "" in query:
-            # Command go here
-            # For adding more commands
+            find_artist_and_listen()
+            
+        elif 'git' in query:
+            speak('Trying to commit changes to git')
+            folder_path = './'
+            commit_message = 'feat: add new feature'
+            git_commit(folder_path, commit_message)
         else:
             speak('I do not understand you, can you repeat, please?')
